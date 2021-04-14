@@ -39,21 +39,16 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 li.item {
-  padding: 0;
+  padding: 10px;
   outline: solid 1px #eee;
-  display: grid;
-  grid-template-columns: 1.7em auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  .name {
-    padding: 5px;
-    text-align: left;
-  }
   .selected-indicator {
-    padding: 5px;
     font-size: 3em;
     line-height: 0.5em;
-    padding: 5px;
     color: lightgray;
   }
   &.selected {
