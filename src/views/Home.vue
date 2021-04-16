@@ -1,13 +1,14 @@
 <template>
   <div class="home">
-    <ItemList :items="items" />
+    <ItemList :items="items" :loading="loading" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import store from '@/store';
+import { defineComponent, computed, onMounted } from 'vue';
 import ItemList from '@/components/items/ItemList.vue';
-import { itemInterface } from '@/models/items/item.interface';
+// import { itemInterface } from '@/models/items/item.interface';
 
 export default defineComponent({
   name: 'Home',
@@ -15,24 +16,13 @@ export default defineComponent({
     ItemList,
   },
   setup() {
-    const items: itemInterface[] = [
-      {
-        id: 1,
-        name: 'Item1',
-        selected: false,
-      },
-      {
-        id: 2,
-        name: 'Item2',
-        selected: false,
-      },
-      {
-        id: 3,
-        name: 'Item3',
-        selected: false,
-      },
-    ];
-    return { items };
+    // computeds
+    const items = computed(() => store.state.items);
+    const loading = computed(() => store.state.loading);
+
+    onMounted(() => store.dispatch('loadItems'));
+
+    return { items, loading };
   },
 });
 </script>
