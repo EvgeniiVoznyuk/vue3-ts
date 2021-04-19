@@ -1,60 +1,13 @@
-import { Module, MutationTree, ActionTree, GetterTree } from 'vuex'
-import { MutationType, RootStateInterface, ItemsStateInterface } from '@/models/store'
-import { initialItemsState } from './initialState'
-import { ItemInterface } from '@/models/items/item.interface'
-import apiClient from '@/api-client'
+import { rootStore, dispatchModuleAction } from '../root'
+import { StoreModuleNames, ItemsStateInterface } from '@/models/store'
 
-export const mutations: MutationTree<ItemsStateInterface> = {
-  loadingItems(state: ItemsStateInterface) {
-    state.loading = true
+const itemsStore = {
+  get state(): ItemsStateInterface {
+    return rootStore.state.itemsState
   },
-  loadedItems(state: ItemsStateInterface, items: ItemInterface[]) {
-    state.items = items
-    state.loading = false
-  },
-  selectItem(state: ItemsStateInterface, params: {
-    id: number
-    selected: boolean
-  }) {
-    const { id, selected } = params
-    const item = state.items.find(o => o.id === id)
-    if (item) {
-      item.selected = selected
-    }
+  action<T>(actionName: string, params?: T): void {
+    dispatchModuleAction(StoreModuleNames.itemsState, actionName, params)
   }
 }
 
-export const actions: ActionTree<ItemsStateInterface, RootStateInterface> = {
-  loadItems({ commit }) {
-    commit(MutationType.items.loadingItems)
-
-    setTimeout(() => {
-      apiClient
-        .items
-        .fetchItems()
-        .then((data: ItemInterface[]) => {
-          commit(MutationType.items.loadedItems, data)
-        })
-    }, 1000)
-  },
-
-  selectItem({ commit }, params: {
-    id: number
-    selected: boolean
-  }) {
-    commit(MutationType.items.selectItem, params)
-  }
-}
-
-export const getters: GetterTree<ItemsStateInterface, RootStateInterface> = {}
-
-const state: ItemsStateInterface = initialItemsState
-const namespaced: boolean = true
-
-export const itemsState: Module<ItemsStateInterface, RootStateInterface> = {
-  namespaced,
-  state,
-  getters,
-  actions,
-  mutations
-}
+export const useItemsStore = () => itemsStore
