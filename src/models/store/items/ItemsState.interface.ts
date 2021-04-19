@@ -1,4 +1,4 @@
-import { ItemInterface } from '../items/item.interface';
+import { ItemInterface } from '@/models/items/item.interface';
 /**
  * @name ItemsStateInterface
  * @description

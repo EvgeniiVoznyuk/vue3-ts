@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import { ItemsStateInterface } from '@/models/store/ItemsStateInterface';
+import { ItemsStateInterface } from '@/models/store/items/ItemsState.interface';
 import { ItemInterface } from '@/models/items/item.interface';
 import apiClient from '@/api-client';
 
